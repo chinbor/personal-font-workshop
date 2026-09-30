@@ -1,7 +1,7 @@
 ---
 name: personal-font-workshop
 license: MIT
-description: Use when a user wants to design a personal typeface, turn original lettering or SVG glyphs into an installable font, batch-import into FontForge, or fix glyph consistency, spacing, naming, and small-size readability. Especially useful for beginner Latin or coding fonts. Not for tutorial-video production or merely selecting an existing font.
+description: Use when a user wants to design a personal typeface, turn original lettering or SVG glyphs into an installable font, batch-import into FontForge, or fix glyph consistency, spacing, naming, small-size readability, and cursor/baseline alignment. Especially useful for beginner Latin or coding fonts. Not for tutorial-video production or merely selecting an existing font.
 ---
 
 # 个人字体工坊
@@ -15,6 +15,7 @@ description: Use when a user wants to design a personal typeface, turn original 
 - 新设计：阅读 [设计与素材](references/design.md)，先做小样，取得风格反馈再整套扩展。
 - 已有 SVG，要导入/生成：阅读 [构建与坐标](references/build.md)。保留原件，先检查映射与定位资料。
 - 已有字体，要修复/改名：阅读 [验收与发布](references/quality.md)，复现问题后只改相关部分。
+- 光标对不齐、字面偏下或需要排查旧版本：另读 [行高诊断与旧字体修复](references/metrics.md)。先确认实际使用的成品；新构建器修好了，不代表旧安装文件已更新。
 - 默认建议英文首版：U+0020–U+007E，共 95 个可打印 ASCII（94 个可见字形和空格）；U+00A0 不换行空格可选。用户指定范围优先，不能把试验子集当完整字体交付。
 
 ## 工作路径与检查点
@@ -23,14 +24,15 @@ description: Use when a user wants to design a personal typeface, turn original 
 2. **代表性小样**：例如 `H O n o a g 0 1 l , { }`；显示大图和目标小字号。讨论圆角、笔画、字腔、基线和间距。样字不是强制清单，按风格和用途替换。
 3. **整套轮廓**：建立一张字符清单。位图参考不能靠裁切或改扩展名变成字体；用授权参考重新设计，或整理用户的手绘轮廓。检查重复、漏字和标点。
 4. **编码与构建**：使用 `U0041.svg`、`U0061.svg`、`U003F.svg` 等编码文件名，解决大小写冲突和 Windows 禁用字符。所有字共享已确定的设计比例；裁紧后丢失的基线位置必须补回，不能逐字撑满格子。
-5. **实测迭代**：先做带独立内部名字的试验版，再检查目标软件的小字号。等宽指每个字符的前进宽度相同，不是字面宽度相同；空格也遵守相同宽度。不要只缩窄空格破坏代码列对齐。
+5. **实测迭代**：先做带独立内部名字的试验版，再检查目标软件的小字号、光标、当前行背景、选区和下伸笔画。记录版本身份及实测环境。等宽指每个字符的前进宽度相同，不是字面宽度相同；空格也遵守相同宽度。不要只缩窄空格破坏代码列对齐。
 6. **交付**：可编辑源文件、字符清单、SFD、TTF、真实字体预览、自动检查报告和实际软件验收状态。明确未做字符和回退字体；中文和图标不能因为系统回退显示正常就算本字体支持。
 
 ## 可执行工具
 
 - `scripts/project.py`：普通 Python 3.8+，仅标准库。生成字符计划/试字文本，检查文件、映射、封闭填充路径和明确的定位数据。运行 `--help` 查看参数。
 - `scripts/build_font.py`：FontForge 自带的 Python 环境；按明确度量导入 SVG，生成 SFD/TTF，重新打开验证。运行方式见构建参考。仅支持单个静态 Regular 款的基本轮廓；不自动设计字形、不推断缺失基线、不生成连字。
-- 两个工具都不安装软件、不联网、不上传素材、不安装字体到系统，也不覆盖已有输出目录。需要其它依赖时先说明用途与成本，在用户授权范围内安装。
+- `scripts/font_metrics.py`：普通 Python + fontTools；只读检查现成字体的身份/行高/哈希，或按明确参数生成仅修垂直度量的独立试验 TTF。保留轮廓、宽度和提示数据；限制及参数见行高参考。
+- 工具都不安装软件、不联网、不上传素材、不安装字体到系统，也不覆盖已有输出目录。需要其它依赖时先说明用途与成本，在用户授权范围内安装。
 
 ## 不可省略的边界
 
