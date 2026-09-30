@@ -1,0 +1,4 @@
+interface:
+  display_name: "个人字体工坊"
+  short_description: "从个人审美出发，设计英文字形并生成字体，检查间距与小字号效果"
+  default_prompt: "使用 $personal-font-workshop 帮我制作一款符合自己审美的字体，先确认用途和风格，再做样字、生成字体并实测。"
